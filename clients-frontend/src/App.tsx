@@ -1,14 +1,13 @@
-import './App.css'
-
+import "./App.css";
+import NavBar from "./components/Navbar";
+import Tablelist from "./components/Tablelist";
 function App() {
-
   return (
     <>
-      <h1 className="text-3xl font-bold underline">
-    Hello world!
-  </h1>
+      <NavBar />
+      <Tablelist />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
