@@ -1,4 +1,8 @@
-function Navbar() {
+import React from "react";
+
+import { NavBarProps } from '../types';
+
+const NavBar: React.FC<NavBarProps> = ({onOpen}) => {
   return (
     <>
       <div className="navbar bg-base-100">
@@ -15,7 +19,7 @@ function Navbar() {
           </div>
         </div>
         <div className="navbar-end">
-          <a className="btn btn-primary mr-2">Button</a>
+          <a className="btn btn-primary mr-2" onClick={onOpen}>Add Client</a>
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -44,4 +48,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavBar;
