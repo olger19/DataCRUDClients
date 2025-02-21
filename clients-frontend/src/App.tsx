@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 import ModalForm from "./components/ModalForm";
-import NavBar from "./components/Navbar";
-import TableList from "./components/Tablelist";
+import NavBar from "./components/NavBar";
+import TableList from "./components/TableList";
 
 function App() {
 

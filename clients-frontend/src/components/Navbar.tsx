@@ -5,21 +5,24 @@ import { NavBarProps } from '../types';
 const NavBar: React.FC<NavBarProps> = ({onOpen}) => {
   return (
     <>
-      <div className="navbar bg-base-100">
+      <div className="navbar bg-base-100 P-4">
         <div className="navbar-start">
-          <a className="btn btn-ghost text-xl">Data Clients</a>
+            {/* Logo */}
+          <a className="btn btn-ghost text-xl">
+          <img src="/LOGO1.png" alt="Logo" className="w-32 h-auto" />
+          </a>
         </div>
-        <div className="navbar-center">
+        <div className="navbar-center ">
           <div className="form-control">
             <input
               type="text"
-              placeholder="Search"
-              className="input input-bordered w-48 md:w-auto"
+              placeholder="Buscar Cliente"
+              className="input input-bordered w-100 md:w-110"
             />
           </div>
         </div>
         <div className="navbar-end">
-          <a className="btn btn-primary mr-2" onClick={onOpen}>Add Client</a>
+          <a className="btn btn-primary mr-2" onClick={onOpen}>Agregar Cliente</a>
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}

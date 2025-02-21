@@ -1,3 +1,6 @@
+
+
+
 import React from "react";
 
 import { TableListProps } from '../types';
@@ -55,6 +58,142 @@ const TableList: React.FC<TableListProps> = ({handleOpen}) => {
       NombreVendedor: "Nancy",
       Rubro: "Humano",
     },
+    {
+      id: 4,
+      Cliente: "Clinica San Juan de Dios",
+      NombreComercial: "Vacio",
+      NroDocumento: "12345678",
+      TipoDocumento: "DNI",
+      Contacto: "Fulano3",
+      Telefono1: "987654321",
+      Telefono2: "987654323",
+      Ciudad: "Arequipa",
+      Direccion: "Av. Los Pinos 123",
+      CargoContacto: "Gerente",
+      CorreoContacto1: "fulano1@gmail.com",
+      CorreoContacto2: "fulano2@gmail.com",
+      NombreVendedor: "Nancy",
+      Rubro: "Humano",
+    },
+    {
+      id: 5,
+      Cliente: "Clinica San Juan de Dios",
+      NombreComercial: "Vacio",
+      NroDocumento: "12345678",
+      TipoDocumento: "DNI",
+      Contacto: "Fulano3",
+      Telefono1: "987654321",
+      Telefono2: "987654323",
+      Ciudad: "Arequipa",
+      Direccion: "Av. Los Pinos 123",
+      CargoContacto: "Gerente",
+      CorreoContacto1: "fulano1@gmail.com",
+      CorreoContacto2: "fulano2@gmail.com",
+      NombreVendedor: "Nancy",
+      Rubro: "Humano",
+    },
+    {
+      id: 6,
+      Cliente: "Clinica San Juan de Dios",
+      NombreComercial: "Vacio",
+      NroDocumento: "12345678",
+      TipoDocumento: "DNI",
+      Contacto: "Fulano3",
+      Telefono1: "987654321",
+      Telefono2: "987654323",
+      Ciudad: "Arequipa",
+      Direccion: "Av. Los Pinos 123",
+      CargoContacto: "Gerente",
+      CorreoContacto1: "fulano1@gmail.com",
+      CorreoContacto2: "fulano2@gmail.com",
+      NombreVendedor: "Nancy",
+      Rubro: "Humano",
+    },
+    {
+      id: 7,
+      Cliente: "Clinica San Juan de Dios",
+      NombreComercial: "Vacio",
+      NroDocumento: "12345678",
+      TipoDocumento: "DNI",
+      Contacto: "Fulano3",
+      Telefono1: "987654321",
+      Telefono2: "987654323",
+      Ciudad: "Arequipa",
+      Direccion: "Av. Los Pinos 123",
+      CargoContacto: "Gerente",
+      CorreoContacto1: "fulano1@gmail.com",
+      CorreoContacto2: "fulano2@gmail.com",
+      NombreVendedor: "Nancy",
+      Rubro: "Humano",
+    },
+    {
+      id: 8,
+      Cliente: "Clinica San Juan de Dios",
+      NombreComercial: "Vacio",
+      NroDocumento: "12345678",
+      TipoDocumento: "DNI",
+      Contacto: "Fulano3",
+      Telefono1: "987654321",
+      Telefono2: "987654323",
+      Ciudad: "Arequipa",
+      Direccion: "Av. Los Pinos 123",
+      CargoContacto: "Gerente",
+      CorreoContacto1: "fulano1@gmail.com",
+      CorreoContacto2: "fulano2@gmail.com",
+      NombreVendedor: "Nancy",
+      Rubro: "Humano",
+    },
+    {
+      id: 9,
+      Cliente: "Clinica San Juan de Dios",
+      NombreComercial: "Vacio",
+      NroDocumento: "12345678",
+      TipoDocumento: "DNI",
+      Contacto: "Fulano3",
+      Telefono1: "987654321",
+      Telefono2: "987654323",
+      Ciudad: "Arequipa",
+      Direccion: "Av. Los Pinos 123",
+      CargoContacto: "Gerente",
+      CorreoContacto1: "fulano1@gmail.com",
+      CorreoContacto2: "fulano2@gmail.com",
+      NombreVendedor: "Nancy",
+      Rubro: "Humano",
+    },
+    {
+      id: 10,
+      Cliente: "Clinica San Juan de Dios",
+      NombreComercial: "Vacio",
+      NroDocumento: "12345678",
+      TipoDocumento: "DNI",
+      Contacto: "Fulano3",
+      Telefono1: "987654321",
+      Telefono2: "987654323",
+      Ciudad: "Arequipa",
+      Direccion: "Av. Los Pinos 123",
+      CargoContacto: "Gerente",
+      CorreoContacto1: "fulano1@gmail.com",
+      CorreoContacto2: "fulano2@gmail.com",
+      NombreVendedor: "Nancy",
+      Rubro: "Humano",
+    },
+    {
+      id: 11,
+      Cliente: "Clinica San Juan de Dios",
+      NombreComercial: "Vacio",
+      NroDocumento: "12345678",
+      TipoDocumento: "DNI",
+      Contacto: "Fulano3",
+      Telefono1: "987654321",
+      Telefono2: "987654323",
+      Ciudad: "Arequipa",
+      Direccion: "Av. Los Pinos 123",
+      CargoContacto: "Gerente",
+      CorreoContacto1: "fulano1@gmail.com",
+      CorreoContacto2: "fulano2@gmail.com",
+      NombreVendedor: "Nancy",
+      Rubro: "Humano",
+    },
   ];
   return (
     <>
@@ -76,7 +215,7 @@ const TableList: React.FC<TableListProps> = ({handleOpen}) => {
               <th>Cargo Contacto</th>
               <th>Correo Contacto1</th>
               <th>Correo Contacto2</th>
-              <th>Nom. Vendedor</th>
+              <th>Nom. Vend.</th>
               <th>Rubro</th>
             </tr>
           </thead>
@@ -100,10 +239,10 @@ const TableList: React.FC<TableListProps> = ({handleOpen}) => {
                 <td>{client.NombreVendedor}</td>
                 <td>{client.Rubro}</td>
                 <td>
-                  <button onClick={() => handleOpen('edit')} className="btn btn-secondary">Update</button>
+                  <button onClick={() => handleOpen('edit')} className="btn btn-secondary">Editar</button>
                 </td>
                 <td>
-                  <button className="btn btn-accent">Delete</button>
+                  <button className="btn btn-accent">Eliminar</button>
                 </td>
               </tr>
             ))}
