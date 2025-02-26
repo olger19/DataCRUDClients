@@ -4,24 +4,27 @@ import dotenv from 'dotenv';
 
 import pool from './db';
 import authRoutes from './routes/authRoutes';
+import clienteRoutes from './routes/clienteRoutes';
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 //Middlewares
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
+app.use('/api', clienteRoutes);
 
-//Conexion a postgres con pool
+/** 
 pool.connect()
   .then(() => console.log('📌 Conectado a PostgreSQL'))
   .catch(err => {
     console.error('❌ Error de conexión a PostgreSQL', err);
     process.exit(1); // Detiene el servidor si falla la conexión
   });
+ */
 
 // Rutas básicas
 app.get('/', (req, res) => {
