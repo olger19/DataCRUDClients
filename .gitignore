@@ -1,4 +1,9 @@
+.gitignore
 node_modules/
 clients-backend/node_modules/
+clients-backend/.env
+clients-backend/db.ts
+clients-backend/db.sql
 clients-frontend/node_modules/
 clients-backend/dist/
+
