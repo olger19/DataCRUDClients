@@ -4,6 +4,7 @@ import axios from "axios";
 
 interface LoginResponse {
   token: string;
+  permissions: string[];
 }
 
 const Login = () => {
@@ -18,14 +19,19 @@ const Login = () => {
 
     try {
       const response = await axios.post<LoginResponse>(
-        "http://localhost:3001/api/auth/login",
+        "http://localhost:3000/api/auth/login",
         {
           email,
           password,
         }
       );
+      console.log("Response", response);
 
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem(
+        "permissions",
+        JSON.stringify(response.data.permissions)
+      );
       navigate("/dashboard");
     } catch (err) {
       if (err instanceof Error) {
@@ -37,40 +43,44 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-center mb-4">Iniciar Sesión</h2>
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label className="block text-gray-700">Correo Electrónico</label>
-            <input
-              type="email"
-              className="w-full p-2 border rounded"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Contraseña</label>
-            <input
-              type="password"
-              className="w-full p-2 border rounded"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded"
-          >
-            Ingresar
-          </button>
-        </form>
+    <>
+      <div className="flex justify-center items-center h-screen bg-gray-100">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <h2 className="text-2xl font-bold text-center mb-4">
+            Iniciar Sesión
+          </h2>
+          {error && <p className="text-red-500 text-center">{error}</p>}
+          <form onSubmit={handleLogin}>
+            <div className="mb-4">
+              <label className="block text-gray-700">Correo Electrónico</label>
+              <input
+                type="email"
+                className="w-full p-2 border rounded"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Contraseña</label>
+              <input
+                type="password"
+                className="w-full p-2 border rounded"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white p-2 rounded"
+            >
+              Ingresar
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
