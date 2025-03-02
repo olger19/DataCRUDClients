@@ -12,3 +12,19 @@ export interface NavBarProps {
 export interface TableListProps {
   handleOpen: (mode: 'add' | 'edit') => void;
 }
+
+export interface CardProps {
+  permissions: string[];
+}
+
+
+export interface Client {
+  id_tipo_familia: string;
+  razon_comercial: string;
+  nombre_comercial: string;
+  nombre_contacto: string;
+  telefonos: string;
+  correos: string;
+  telefonos2: string;
+  correos2: string;
+}

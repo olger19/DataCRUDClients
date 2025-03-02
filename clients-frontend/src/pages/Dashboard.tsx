@@ -1,8 +1,8 @@
 import { useState } from "react";
-//import axios from "axios";
-import TableList from "../components/TableList";
+
 import ModalForm from "../components/ModalForm";
 import NavBar from "../components/NavBar";
+import ClientDetails from "../components/ClientDetails";
 
 const Dashboard = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -20,7 +20,7 @@ const Dashboard = () => {
   return (
     <>
       <NavBar onOpen={() => handleOpen("add")} />
-      <TableList handleOpen={handleOpen} />
+      <ClientDetails handleOpen={handleOpen} />
       <ModalForm
         isOpen={isOpen}
         onSubmit={handleSubmit}

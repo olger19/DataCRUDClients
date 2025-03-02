@@ -1,15 +1,25 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { NavBarProps } from '../types';
 
+
+
 const NavBar: React.FC<NavBarProps> = ({onOpen}) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+  
   return (
     <>
-      <div className="navbar bg-base-100 P-4">
+      <div className="navbar bg-base-100 p-4">
         <div className="navbar-start">
             {/* Logo */}
           <a className="btn btn-ghost text-xl">
-          <img src="/LOGO1.png" alt="Logo" className="w-32 h-auto" />
+          <img src="/LOGO UNIMEDICA 2024.png" alt="Logo" className="w-32 h-auto" />
           </a>
         </div>
         <div className="navbar-center ">
@@ -40,8 +50,9 @@ const NavBar: React.FC<NavBarProps> = ({onOpen}) => {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
-              <li>
-                <a>Logout</a>
+              
+              <li onClick={handleLogout}>
+                <a>Cerrar sesión</a>
               </li>
             </ul>
           </div>

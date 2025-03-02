@@ -1,34 +1,36 @@
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
+import Login from "./pages/LoginPage";
+import Dashboard from "./pages/Dashboard";
+//import DashboardCards from "./pages/DashboardCards";
+import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
-import ModalForm from "./components/ModalForm";
-import NavBar from "./components/NavBar";
-import TableList from "./components/TableList";
+import DashboardCards from "./pages/DashboardCards";
 
 function App() {
-
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
-
-  const handleOpen = (mode: 'add' | 'edit'): void => {
-    setModalMode(mode);
-    setIsOpen(true);
-  }
-
-  const handleSubmit = (): void => {
-    console.log(modalMode === 'add' ? 'modal mode add' : 'modal mode edit');
-    setIsOpen(false); // Cerra el modal
-  }
-
   return (
-    <>
-      <NavBar onOpen={() => handleOpen('add')}/>
-      <TableList handleOpen={handleOpen}/>
-      <ModalForm 
-      isOpen = {isOpen} 
-      onSubmit={handleSubmit}
-      mode={modalMode}
-      onClose = {() => setIsOpen(false)} />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={< Navigate to="/login" replace />}></Route>
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardCards />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+        path="/client-details/:id"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+        />
+      </Routes>
+    </Router>
   );
 }
 

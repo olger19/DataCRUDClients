@@ -223,7 +223,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
                 ✕
               </button>
               <button className="btn btn-success">
-                {mode === "edit" ? "Save Changes" : "Add Client"}
+                {mode === "edit" ? "Guardar Cambios" : "Agregar Cliente"}
               </button>
             </div>
           </form>
