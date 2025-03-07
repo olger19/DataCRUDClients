@@ -4,7 +4,10 @@ import axios from "axios";
 
 import { Client, TableListProps } from "../types";
 
-const ClientDetails: React.FC<TableListProps> = ({ handleOpen }) => {
+const ClientDetails: React.FC<TableListProps> = ({
+  handleOpen,
+  searchTerm,
+}) => {
   const { id } = useParams<{ id: string }>();
   const [clients, setClient] = useState<Client[]>([]);
 
@@ -12,6 +15,7 @@ const ClientDetails: React.FC<TableListProps> = ({ handleOpen }) => {
     const fetchClientDetails = async () => {
       try {
         const response = await axios.get<Client[]>(
+          
           `http://localhost:3000/api/clientes/familia/${id}`,
           {
             headers: {
@@ -28,20 +32,35 @@ const ClientDetails: React.FC<TableListProps> = ({ handleOpen }) => {
 
     fetchClientDetails();
   }, [id]);
-
+  // Filter clients by search term
+  const filteredClients = clients.filter(
+    (client) =>
+      (client.tipo_doc?.toLowerCase() || "").includes(searchTerm.toLowerCase())||
+      (client.nro_doc?.toLowerCase() || "").includes(searchTerm.toLowerCase())||
+      (client.razon_comercial?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (client.nombre_comercial?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (client.nombre_contacto?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (client.telefonos?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (client.correos?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (client.telefonos2?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (client.correos2?.toLowerCase() || "").includes(searchTerm.toLowerCase())
+  );
   if (!clients) {
     return <div>Cargando...</div>;
   }
-
   return (
     <>
       <div className="overflow-x-auto mt-10">
+        
         {clients.length === 0 ? (
           <p>No hay datos guardados...</p>
         ) : (
-          <table className="table w-full">
+          <table className="table table-xs table-zebra">
             <thead>
               <tr>
+                <th>Id</th>
+                <th>Tipo Doc.</th>
+                <th>Nro Doc.</th>
                 <th>Razón Comercial</th>
                 <th>Nombre Comercial</th>
                 <th>Nombre de Contacto</th>
@@ -52,18 +71,21 @@ const ClientDetails: React.FC<TableListProps> = ({ handleOpen }) => {
               </tr>
             </thead>
             <tbody>
-              {clients.map((client, index) => (
+              {filteredClients.map((client, index) => (
                 <tr key={index}>
-                  <td>{client.razon_comercial}</td>
-                  <td>{client.nombre_comercial}</td>
-                  <td>{client.nombre_contacto}</td>
-                  <td>{client.telefonos}</td>
-                  <td>{client.correos}</td>
+                  <td>{client.id_cliente}</td>
+                  <td>{client.tipo_doc}</td>
+                  <td>{client.nro_doc}</td>
+                  <td>{client.razon_comercial || "N/A"}</td>
+                  <td>{client.nombre_comercial || "N/A"}</td>
+                  <td>{client.nombre_contacto || "N/A"}</td>
+                  <td>{client.telefonos || "N/A"}</td>
+                  <td>{client.correos || "N/A"}</td>
                   <td>{client.telefonos2 || "N/A"}</td>
                   <td>{client.correos2 || "N/A"}</td>
                   <td>
                     <button
-                      onClick={() => handleOpen("edit")}
+                      onClick={() => handleOpen("edit", client.id_cliente)}
                       className="btn btn-secondary"
                     >
                       Editar
