@@ -13,11 +13,12 @@ const Cards: React.FC<CardProps> = ({ permissions }) => {
     <>
       <div className="flex flex-grap justify-center items-center gap-4">
         {permissions.includes("1") && (
-          <div className="card bg-base-100 w-96 h-auto shadow-sm mt-5">
-            <figure>
+          <div className="card w-96 bg-blue-100 card-lg shadow-sm">
+            <figure className="px-10 pt-10">
               <img
-                src="https://static.vecteezy.com/system/resources/previews/040/815/487/non_2x/client-icon-in-logotype-vector.jpg"
-                alt="Clientes"
+                src="https://sinch.com/wp-content/uploads/2024/08/Os-6-principais-tipos-de-clientes-e-como-lidar-com-cada-um-deles-Capa.png"
+                alt="Shoes"
+                className="rounded-xl"
               />
             </figure>
             <div className="card-body items-center text-center">
@@ -36,18 +37,17 @@ const Cards: React.FC<CardProps> = ({ permissions }) => {
         )}
 
         {permissions.includes("2") && (
-          <div className="card bg-base-100 w-96 h-auto shadow-sm mt-5">
-            <figure>
+          <div className="card w-96 bg-blue-100 card-lg shadow-sm">
+            <figure className="px-10 pt-10">
               <img
-                src="https://w7.pngwing.com/pngs/698/880/png-transparent-computer-icons-vendor-delivery-miscellaneous-blue-data-thumbnail.png"
-                alt="Clientes"
+                src="https://sinch.com/wp-content/uploads/2024/08/Os-6-principais-tipos-de-clientes-e-como-lidar-com-cada-um-deles-Capa.png"
+                alt="Shoes"
+                className="rounded-xl"
               />
             </figure>
             <div className="card-body items-center text-center">
               <h2 className="card-title">Proveedores</h2>
-              <p>
-                Accede a informacion de proveedores.
-              </p>
+              <p>Accede a informacion de proveedores.</p>
               <div className="card-actions justify-end">
                 <button
                   className="btn btn-primary"
@@ -61,19 +61,17 @@ const Cards: React.FC<CardProps> = ({ permissions }) => {
         )}
 
         {permissions.includes("3") && (
-          <div className="card bg-base-100 w-96 h-auto shadow-sm mt-5">
-            <figure>
+          <div className="card w-96 bg-blue-100 card-lg shadow-sm">
+            <figure className="px-10 pt-10">
               <img
-              className="w-full h-48 object-cover"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG5IvsSOjHAD13Bg6EfQ_lYlgqVw0YMoyPKQ&s"
-                alt="Clientes"
+                src="https://sinch.com/wp-content/uploads/2024/08/Os-6-principais-tipos-de-clientes-e-como-lidar-com-cada-um-deles-Capa.png"
+                alt="Shoes"
+                className="rounded-xl"
               />
             </figure>
             <div className="card-body items-center text-center">
               <h2 className="card-title">Servicios</h2>
-              <p>
-                Accede a informacion de Servicios.
-              </p>
+              <p>Accede a informacion de Servicios.</p>
               <div className="card-actions justify-end">
                 <button
                   className="btn btn-primary"
