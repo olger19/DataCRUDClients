@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { DownloadTableExcel } from "react-export-table-to-excel";
 import axios from "axios";
 
 import { Client, TableListProps } from "../types";
@@ -7,15 +8,15 @@ import { Client, TableListProps } from "../types";
 const ClientDetails: React.FC<TableListProps> = ({
   handleOpen,
   searchTerm,
+  reload,
 }) => {
   const { id } = useParams<{ id: string }>();
   const [clients, setClient] = useState<Client[]>([]);
-
+  const tableRef = useRef<HTMLTableElement>(null);
   useEffect(() => {
     const fetchClientDetails = async () => {
       try {
         const response = await axios.get<Client[]>(
-          
           `http://localhost:3000/api/clientes/familia/${id}`,
           {
             headers: {
@@ -23,7 +24,7 @@ const ClientDetails: React.FC<TableListProps> = ({
             },
           }
         );
-        console.log("Response", response.data);
+        //console.log("Response", response.data);
         setClient(response.data);
       } catch (error) {
         console.error("Error fetching client details:", error);
@@ -31,31 +32,83 @@ const ClientDetails: React.FC<TableListProps> = ({
     };
 
     fetchClientDetails();
-  }, [id]);
+  }, [id, reload]);
   // Filter clients by search term
   const filteredClients = clients.filter(
     (client) =>
-      (client.tipo_doc?.toLowerCase() || "").includes(searchTerm.toLowerCase())||
-      (client.nro_doc?.toLowerCase() || "").includes(searchTerm.toLowerCase())||
-      (client.razon_comercial?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (client.nombre_comercial?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (client.nombre_contacto?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (client.telefonos?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (client.correos?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (client.telefonos2?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (client.tipo_doc?.toLowerCase() || "").includes(
+        searchTerm.toLowerCase()
+      ) ||
+      (client.nro_doc?.toLowerCase() || "").includes(
+        searchTerm.toLowerCase()
+      ) ||
+      (client.razon_comercial?.toLowerCase() || "").includes(
+        searchTerm.toLowerCase()
+      ) ||
+      (client.nombre_comercial?.toLowerCase() || "").includes(
+        searchTerm.toLowerCase()
+      ) ||
+      (client.nombre_contacto?.toLowerCase() || "").includes(
+        searchTerm.toLowerCase()
+      ) ||
+      (client.telefonos?.toLowerCase() || "").includes(
+        searchTerm.toLowerCase()
+      ) ||
+      (client.correos?.toLowerCase() || "").includes(
+        searchTerm.toLowerCase()
+      ) ||
+      (client.telefonos2?.toLowerCase() || "").includes(
+        searchTerm.toLowerCase()
+      ) ||
       (client.correos2?.toLowerCase() || "").includes(searchTerm.toLowerCase())
   );
+
+  const downloadExcel = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/export-excel/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        responseType: "blob", // Importante para manejar archivos
+        
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data as BlobPart]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "dataCompleteFamiliaId.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error al descargar el archivo", error);
+    }
+  };
+
   if (!clients) {
     return <div>Cargando...</div>;
   }
+
   return (
     <>
+      {tableRef.current && (
+        <DownloadTableExcel
+          filename="tabledata"
+          sheet="users"
+          currentTableRef={tableRef.current}
+        >
+          <button className="btn btn-success m-2">
+            Exportar Tabla en Excel
+          </button>
+        </DownloadTableExcel>
+      )}
+      <button className="btn btn-success m-2" onClick={downloadExcel}>Exportar Data completa</button>
+
       <div className="overflow-x-auto mt-10">
-        
         {clients.length === 0 ? (
           <p>No hay datos guardados...</p>
         ) : (
-          <table className="table table-xs table-zebra">
+          <table ref={tableRef} className="table table-xs table-zebra">
             <thead>
               <tr>
                 <th>Id</th>
@@ -74,8 +127,8 @@ const ClientDetails: React.FC<TableListProps> = ({
               {filteredClients.map((client, index) => (
                 <tr key={index}>
                   <td>{client.id_cliente}</td>
-                  <td>{client.tipo_doc}</td>
-                  <td>{client.nro_doc}</td>
+                  <td>{client.tipo_doc || "N/A"}</td>
+                  <td>{client.nro_doc || "N/A"}</td>
                   <td>{client.razon_comercial || "N/A"}</td>
                   <td>{client.nombre_comercial || "N/A"}</td>
                   <td>{client.nombre_contacto || "N/A"}</td>
@@ -90,9 +143,6 @@ const ClientDetails: React.FC<TableListProps> = ({
                     >
                       Editar
                     </button>
-                  </td>
-                  <td>
-                    <button className="btn btn-accent">Eliminar</button>
                   </td>
                 </tr>
               ))}

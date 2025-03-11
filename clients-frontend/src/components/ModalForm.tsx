@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-import { ModalFormProps, Contacto} from "../types";
+import { ModalFormProps, Contacto } from "../types";
 
 const ModalForm: React.FC<ModalFormProps> = ({
   isOpen,
   onClose,
   mode,
   onSubmit,
-  clientData
+  clientData,
 }) => {
   const [razonComercial, setRazonComercial] = useState("");
   const [nombreComercial, setNomComercial] = useState("");
@@ -19,54 +19,53 @@ const ModalForm: React.FC<ModalFormProps> = ({
   const [nombreVendedor, setNombreVendedor] = useState("");
   const [contacto, setContacto] = useState<Contacto[]>([
     {
-      id_contacto:"",
+      id_contacto: "",
       nombre_contacto: "",
       cargo_contacto: "",
-      telefonos: [{ id_telefono: "",numero: "", numero2: "" }],
-      correos: [{ id_correo:"",correo: "", correo2: "" }],
+      telefonos: [{ id_telefono: "", numero: "", numero2: "" }],
+      correos: [{ id_correo: "", correo: "", correo2: "" }],
     },
   ]);
 
   useEffect(() => {
-    if (clientData) {
-      //console.log("ModalForm (ClientData): ", clientData)//TODO: ME DA UNDEFINED LOS VALUES
-      setRazonComercial(clientData.razonComercial || "");
-      setNomComercial(clientData.nombreComercial|| "");
-      setRubro(clientData.rubro|| "");
-      setTipoDoc(clientData.tipoDoc|| "");
-      setNroDoc(clientData.nroDoc|| "");
-      setCiudad(clientData.ciudad|| "");
-      setDireccion(clientData.direccion|| "");
-      setNombreVendedor(clientData.nombreVendedor|| "");
-      setContacto(
-        clientData.contacto.length > 0
-          ? clientData.contacto.map((contacto) => ({
-              id_contacto: contacto.id_contacto || "",
-              nombre_contacto: contacto.nombre_contacto || "",
-              cargo_contacto: contacto.cargo_contacto || "",
-              telefonos: contacto.telefonos.map((telefono) => ({
-                id_telefono: telefono.id_telefono || "",
-                numero: telefono.numero || "",
-                numero2: telefono.numero2 || "",
-              })),
-              correos: contacto.correos.map((correo) => ({
-                id_correo: correo.id_correo || "",
-                correo: correo.correo || "",
-                correo2: correo.correo2 || "",
-              })),
-            }))
-          : [
-              {
-                id_contacto: "",
-                nombre_contacto: "",
-                cargo_contacto: "",
-                telefonos: [{ id_telefono: "", numero: "", numero2: "" }],
-                correos: [{ id_correo: "", correo: "", correo2: "" }],
-              },
-            ]
-      );
-    }
-  }, [clientData]);
+    if (!isOpen || !clientData) return; // No ejecuta si el modal está cerrado
+
+    setRazonComercial(clientData.razonComercial || "");
+    setNomComercial(clientData.nombreComercial || "");
+    setRubro(clientData.rubro || "");
+    setTipoDoc(clientData.tipoDoc || "");
+    setNroDoc(clientData.nroDoc || "");
+    setCiudad(clientData.ciudad || "");
+    setDireccion(clientData.direccion || "");
+    setNombreVendedor(clientData.nombreVendedor || "");
+    setContacto(
+      clientData.contacto.length > 0
+        ? clientData.contacto.map((contacto) => ({
+            id_contacto: contacto.id_contacto || "",
+            nombre_contacto: contacto.nombre_contacto || "",
+            cargo_contacto: contacto.cargo_contacto || "",
+            telefonos: contacto.telefonos.map((telefono) => ({
+              id_telefono: telefono.id_telefono || "",
+              numero: telefono.numero || "",
+              numero2: telefono.numero2 || "",
+            })),
+            correos: contacto.correos.map((correo) => ({
+              id_correo: correo.id_correo || "",
+              correo: correo.correo || "",
+              correo2: correo.correo2 || "",
+            })),
+          }))
+        : [
+            {
+              id_contacto: "",
+              nombre_contacto: "",
+              cargo_contacto: "",
+              telefonos: [{ id_telefono: "", numero: "", numero2: "" }],
+              correos: [{ id_correo: "", correo: "", correo2: "" }],
+            },
+          ]
+    );
+  }, [clientData, isOpen]);
 
   const handleContactoChange = (
     index: number,
@@ -120,7 +119,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
         direccion,
         nombreVendedor,
       };
-      console.log('ModalForm: clientData',clientData);
+      console.log("ModalForm: clientData", clientData);
       await onSubmit(clientData);
       onClose();
     } catch (error) {
@@ -343,20 +342,22 @@ const ModalForm: React.FC<ModalFormProps> = ({
                   placeholder="Jacobo Hunter"
                 />
               </label>
+              <textarea className="textarea w-100" placeholder="Observación"></textarea>
             </div>
 
             <div className="flex justify-between mt-4">
-              <button
+              <button className="btn btn-success">
+                {mode === "edit" ? "Guardar Cambios" : "Agregar Cliente"}
+              </button>
+
+            </div>
+          </form>
+          <button
                 className="btn btn-sm btn-circle btn-ghost absolute right-2 top-5"
                 onClick={onClose}
               >
                 ✕
               </button>
-              <button className="btn btn-success">
-                {mode === "edit" ? "Guardar Cambios" : "Agregar Cliente"}
-              </button>
-            </div>
-          </form>
         </div>
       </dialog>
     </>

@@ -11,9 +11,9 @@ const Cards: React.FC<CardProps> = ({ permissions }) => {
   };
   return (
     <>
-      <div className="flex flex-grap justify-center items-center gap-4">
+      <div className="flex flex-grap justify-center bg-blue-500 items-center gap-4 h-screen">
         {permissions.includes("1") && (
-          <div className="card w-96 bg-blue-100 card-lg shadow-sm">
+          <div className="card w-96 bg-blue-100 card-lg shadow-sm hover:-translate-y-2 transition delay-150 duration-300">
             <figure className="px-10 pt-10">
               <img
                 src="https://sinch.com/wp-content/uploads/2024/08/Os-6-principais-tipos-de-clientes-e-como-lidar-com-cada-um-deles-Capa.png"
@@ -23,7 +23,7 @@ const Cards: React.FC<CardProps> = ({ permissions }) => {
             </figure>
             <div className="card-body items-center text-center">
               <h2 className="card-title">Clientes</h2>
-              <p>Acceder a informacion de clientes.</p>
+              <p>Acceder a informacion de Clientes.</p>
               <div className="card-actions">
                 <button
                   className="btn btn-primary"
@@ -37,7 +37,7 @@ const Cards: React.FC<CardProps> = ({ permissions }) => {
         )}
 
         {permissions.includes("2") && (
-          <div className="card w-96 bg-blue-100 card-lg shadow-sm">
+          <div className="card w-96 bg-blue-100 card-lg shadow-sm hover:-translate-y-2 transition delay-150 duration-300">
             <figure className="px-10 pt-10">
               <img
                 src="https://sinch.com/wp-content/uploads/2024/08/Os-6-principais-tipos-de-clientes-e-como-lidar-com-cada-um-deles-Capa.png"
@@ -47,7 +47,7 @@ const Cards: React.FC<CardProps> = ({ permissions }) => {
             </figure>
             <div className="card-body items-center text-center">
               <h2 className="card-title">Proveedores</h2>
-              <p>Accede a informacion de proveedores.</p>
+              <p>Accede a informacion de Proveedores.</p>
               <div className="card-actions justify-end">
                 <button
                   className="btn btn-primary"
@@ -61,7 +61,7 @@ const Cards: React.FC<CardProps> = ({ permissions }) => {
         )}
 
         {permissions.includes("3") && (
-          <div className="card w-96 bg-blue-100 card-lg shadow-sm">
+          <div className="card w-96 bg-blue-100 card-lg shadow-sm hover:-translate-y-2 transition delay-150 duration-300">
             <figure className="px-10 pt-10">
               <img
                 src="https://sinch.com/wp-content/uploads/2024/08/Os-6-principais-tipos-de-clientes-e-como-lidar-com-cada-um-deles-Capa.png"
