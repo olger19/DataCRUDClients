@@ -2,6 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import pool from "../../db";
+import ExcelJS from "exceljs";
 import { Contacto } from "../types";
 
 dotenv.config();
@@ -25,6 +26,58 @@ const authenticate = (req: any, res: any, next: any) => {
     res.status(401).json({ message: "Token inválido o expirado" });
   }
 };
+
+//Export data excel
+router.get("/export-excel/:id", authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { id } = req.params;
+    const result = await client.query(`SELECT
+        c.id_cliente,
+		tf.nombre_tipo,
+		c.tipo_doc,
+		c.nro_doc,
+      c.razon_comercial, 
+      c.nombre_comercial, 
+      con.nombre_contacto,
+      STRING_AGG(DISTINCT t.numero, ', ') AS telefonos,
+      STRING_AGG(DISTINCT co.correo, ', ') AS correos,
+      STRING_AGG(DISTINCT t.numero2, ', ') AS telefonos2,
+      STRING_AGG(DISTINCT co.correo2, ', ') AS correos2
+      FROM clientes c
+      LEFT JOIN usuario_tipo_familia ut ON c.id_tipo_familia = ut.id_tipo_familia
+	  LEFT JOIN tipos_familia tf ON ut.id_tipo_familia = tf.id_tipo_familia
+      LEFT JOIN contactos con ON c.id_cliente = con.id_cliente
+      LEFT JOIN telefonos t ON con.id_contacto = t.id_contacto
+      LEFT JOIN correos co ON con.id_contacto = co.id_contacto
+      where ut.id_tipo_familia = $1
+      GROUP BY c.id_cliente,c.razon_comercial, c.nombre_comercial, con.nombre_contacto, c.id_tipo_familia, ut.id_tipo_familia, c.tipo_doc, nro_doc, tf.nombre_tipo;`, [id]); // Ajusta la consulta a tu base de datos
+    client.release();
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Users");
+
+    // Agregar encabezados
+    worksheet.columns = Object.keys(result.rows[0]).map((key) => ({
+      header: key,
+      key: key,
+    }));
+
+    // Agregar datos
+    worksheet.addRows(result.rows);
+
+    // Configurar respuesta como Excel
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.setHeader("Content-Disposition", "attachment; filename=dataComplete.xlsx");
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error generando el archivo Excel");
+  }
+});
+
 
 //obtener cliente
 router.get("/clientes-data/:id", authenticate, async (req: any, res: any) => {
@@ -116,8 +169,9 @@ router.get(
       const { id } = req.params;
 
       const result = await pool.query(
-        `SELECT ut.id_tipo_familia,
+        `SELECT
         c.id_cliente,
+		tf.nombre_tipo,
 		c.tipo_doc,
 		c.nro_doc,
       c.razon_comercial, 
@@ -129,11 +183,12 @@ router.get(
       STRING_AGG(DISTINCT co.correo2, ', ') AS correos2
       FROM clientes c
       LEFT JOIN usuario_tipo_familia ut ON c.id_tipo_familia = ut.id_tipo_familia
+	  LEFT JOIN tipos_familia tf ON ut.id_tipo_familia = tf.id_tipo_familia
       LEFT JOIN contactos con ON c.id_cliente = con.id_cliente
       LEFT JOIN telefonos t ON con.id_contacto = t.id_contacto
       LEFT JOIN correos co ON con.id_contacto = co.id_contacto
       where ut.id_tipo_familia = $1
-      GROUP BY c.id_cliente,c.razon_comercial, c.nombre_comercial, con.nombre_contacto, c.id_tipo_familia, ut.id_tipo_familia, c.tipo_doc, nro_doc;`,
+      GROUP BY c.id_cliente,c.razon_comercial, c.nombre_comercial, con.nombre_contacto, c.id_tipo_familia, ut.id_tipo_familia, c.tipo_doc, nro_doc, tf.nombre_tipo;`,
         [id]
       );
 
