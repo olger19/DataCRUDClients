@@ -58,8 +58,8 @@ const Login = () => {
         <div className="absolute bg-gradient-to-b from-blue-600 to-sky-400 opacity-70 inset-0 z-0"></div>
         <div className="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
           <div className="flex-col flex self-center p-10 sm:max-w-5xl xl:max-w-2xl z-10">
-            <div className="self-start hidden lg:flex flex-col text-white">
-              <h1 className="mb-3 font-bold text-5xl">
+            <div className="self-start hidden lg:flex flex-col text-white font-serif">
+              <h1 className="mb-3 font-bold text-5xl ">
                 Hola ? Bienvenido a Unimedica{" "}
               </h1>
               <p className="pr-3">
@@ -91,13 +91,13 @@ const Login = () => {
               </div>
               {error && <p className="text-red-500 text-center">{error}</p>}
               <form onSubmit={handleLogin}>
-                <div className="space-y-5">
+                <div className="space-y-5 font-serif">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700 tracking-wide">
                       Email
                     </label>
                     <input
-                      className="w-full text-base px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:border-sky-600"
+                      className="w-full text-base px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:border-blue-600"
                       type="email"
                       placeholder="mail@gmail.com"
                       value={email}
@@ -110,7 +110,7 @@ const Login = () => {
                       Password
                     </label>
                     <input
-                      className="w-full content-center text-base px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:border-sky-400"
+                      className="w-full content-center text-base px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:border-blue-600"
                       type="password"
                       placeholder="Ingresa tu contraseña"
                       value={password}
@@ -119,6 +119,7 @@ const Login = () => {
                     />
                   </div>
                   <div className="flex items-center justify-between">
+                    {/* 
                     <div className="flex items-center">
                       <input
                         id="remember_me"
@@ -134,14 +135,17 @@ const Login = () => {
                         Recordarme
                       </label>
                     </div>
+                    */}
+                    {/** 
                     <div className="text-sm">
                       <a
                         href="#"
-                        className="text-blue-400 hover:text-green-500"
+                        className="text-blue-400 hover:text-green-500 disabled:shadow-none"
                       >
                         Olvidaste tu contraseña?
                       </a>
                     </div>
+                    */}
                   </div>
                   <div>
                     <button
@@ -161,7 +165,7 @@ const Login = () => {
                     rel="noopener noreferrer"
                     target="_blank"
                     title="Unimedica"
-                    className="text-green hover:text-blue-500"
+                    className="text-green hover:text-blue-500 "
                   >
                     {" "}Unimedica
                   </a>

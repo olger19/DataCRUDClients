@@ -13,11 +13,12 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [clientData, setClientData] = useState<clientData>();
   const [clientId, setClientId] = useState<string | null>(null);
+  const [reload, setReload] = useState<boolean>(false); //Controlar
 
   const handleOpen = async (mode: "add" | "edit", clientId?: string): Promise<void> => {
     setModalMode(mode);
     if (clientId) {
-      console.log("Id ClientId HandleOpen: ", clientId);
+      //console.log("Id ClientId HandleOpen: ", clientId);
       setClientId(clientId);
       //Otro endpoint que me muestra datos del cliente completo con IDS
       try {
@@ -71,7 +72,7 @@ const Dashboard = () => {
     setIsOpen(true);
   };  
   useEffect(() => {
-    console.log('Nuevo estado de clientData despues del (setClientData):', clientData);
+    //console.log('Nuevo estado de clientData despues del (setClientData):', clientData);
   }, [clientData]); // Solo se ejecuta cuando clientData cambia
 
 
@@ -99,11 +100,11 @@ const Dashboard = () => {
       } catch (error) {
         console.error("Error al agregar cliente: ", error);
       }
-      console.log("modal mode Add");
+      //console.log("modal mode Add");
     } else {
       if (modalMode == "edit") {
-        console.log("modal mode Edit");
-        console.log("Id edit es: ", clientId);
+        //console.log("modal mode Edit");
+        //console.log("Id edit es: ", clientId);
         try {
           const response = await axios.put(
             `http://localhost:3000/api/clientes/${clientId}`,
@@ -121,11 +122,12 @@ const Dashboard = () => {
       }
       //Modo para editar
     }
+    setReload(!reload);
   };
   return (
     <>
       <NavBar onOpen={() => handleOpen("add")} onSearch={setSearchTerm} />
-      <ClientDetails handleOpen={handleOpen} searchTerm={searchTerm} />
+      <ClientDetails handleOpen={handleOpen} searchTerm={searchTerm} reload={reload}/>
       <ModalForm
         isOpen={isOpen}
         onSubmit={handleSubmit}

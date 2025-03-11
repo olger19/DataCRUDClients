@@ -5,8 +5,12 @@ import { NavBarProps } from '../types';
 
 
 
-const NavBar: React.FC<NavBarProps> = ({onOpen}) => {
+const NavBar: React.FC<NavBarProps> = ({onOpen, onSearch}) => {
   const navigate = useNavigate();
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onSearch(event.target.value);
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -26,8 +30,9 @@ const NavBar: React.FC<NavBarProps> = ({onOpen}) => {
           <div className="form-control">
             <input
               type="text"
+              onChange={handleSearchChange}
               placeholder="Buscar Cliente"
-              className="input input-bordered w-100 md:w-110"
+              className="input input-bordered w-60 md:w-110" //Query responsive
             />
           </div>
         </div>
