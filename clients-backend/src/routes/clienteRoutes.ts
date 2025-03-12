@@ -88,7 +88,8 @@ router.get("/clientes-data/:id", authenticate, async (req: any, res: any) => {
       `SELECT c.id_cliente, c.razon_comercial, c.nombre_comercial, c.tipo_doc, c.nro_doc, c.ciudad, c.direccion, c.nombre_vendedor, c.rubro,
               con.id_contacto, con.nombre_contacto, con.cargo_contacto,
               t.id_telefono, t.numero AS telefono_numero, t.numero2 AS telefono_numero2,
-              co.id_correo, co.correo AS correo_principal, co.correo2 AS correo_secundario
+              co.id_correo, co.correo AS correo_principal, co.correo2 AS correo_secundario,
+              desc_observacion
        FROM clientes c
        LEFT JOIN contactos con ON c.id_cliente = con.id_cliente
        LEFT JOIN telefonos t ON con.id_contacto = t.id_contacto
@@ -110,6 +111,7 @@ router.get("/clientes-data/:id", authenticate, async (req: any, res: any) => {
           direccion: row.direccion,
           nombreVendedor: row.nombre_vendedor,
           rubro: row.rubro,
+          desc_observacion: row.desc_observacion,
           contacto: [],
         };
       }
@@ -216,6 +218,7 @@ router.post("/clientes/:id", authenticate, async (req: any, res: any) => {
       nombreVendedor,
       rubro,
       contacto,
+      desc_observacion,
     } = req.body;
     console.log("Datos del cliente:", req.body);
 
@@ -280,8 +283,8 @@ router.post("/clientes/:id", authenticate, async (req: any, res: any) => {
     await client.query("BEGIN");
 
     const result = await client.query(
-      `INSERT INTO clientes (id_tipo_familia, razon_comercial, nombre_comercial, tipo_doc, nro_doc, ciudad, direccion, nombre_vendedor, rubro)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      `INSERT INTO clientes (id_tipo_familia, razon_comercial, nombre_comercial, tipo_doc, nro_doc, ciudad, direccion, nombre_vendedor, rubro, desc_observacion)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING id_cliente`,
       [
         id,
@@ -293,6 +296,7 @@ router.post("/clientes/:id", authenticate, async (req: any, res: any) => {
         direccion,
         nombreVendedor,
         rubro,
+        desc_observacion,
       ]
     );
 
@@ -345,8 +349,8 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
   const client = await pool.connect();
   try {
     const { id } = req.params;
-    console.log("id cliente es: ", id);
-    console.log("Parametros del req.params: ", req.params); //Solo es el id
+    //console.log("id cliente es: ", id);
+    //console.log("Parametros del req.params: ", req.params); //Solo es el id
     const {
       razonComercial,
       nombreComercial,
@@ -357,8 +361,9 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
       nombreVendedor,
       rubro,
       contacto,
+      desc_observacion,
     } = req.body;
-    console.log("Datos del cliente a actualizar:", req.body);
+    //console.log("Datos del cliente a actualizar:", req.body);
 
     // Verificación de campos obligatorios
     if (
@@ -370,7 +375,8 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
       !direccion ||
       !nombreVendedor ||
       !rubro ||
-      !contacto
+      !contacto||
+      !desc_observacion
     ) {
       return res.status(400).json({
         message: "Todos los campos son obligatorios. ",
@@ -382,8 +388,8 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
     // Actualizar cliente
     await client.query(
       `UPDATE clientes
-      SET razon_comercial = $1, nombre_comercial = $2, tipo_doc = $3, nro_doc = $4, ciudad = $5, direccion = $6, nombre_vendedor = $7, rubro = $8
-      WHERE id_cliente = $9`,
+      SET razon_comercial = $1, nombre_comercial = $2, tipo_doc = $3, nro_doc = $4, ciudad = $5, direccion = $6, nombre_vendedor = $7, rubro = $8, desc_observacion = $9
+      WHERE id_cliente = $10`,
       [
         razonComercial,
         nombreComercial,
@@ -393,6 +399,7 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
         direccion,
         nombreVendedor,
         rubro,
+        desc_observacion,
         id, //id Cliente
       ]
     );
@@ -472,6 +479,7 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
   }
 });
 
+//Endpoints que todavia no se usan
 // Endpoint para eliminar un cliente
 router.delete("/clientes/:id", authenticate, async (req: any, res: any) => {
   const client = await pool.connect();

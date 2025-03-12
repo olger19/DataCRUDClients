@@ -17,6 +17,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
   const [ciudad, setCiudad] = useState("");
   const [direccion, setDireccion] = useState("");
   const [nombreVendedor, setNombreVendedor] = useState("");
+  const [desc_observacion, setDescObservacion] = useState("");
   const [contacto, setContacto] = useState<Contacto[]>([
     {
       id_contacto: "",
@@ -38,6 +39,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
     setCiudad(clientData.ciudad || "");
     setDireccion(clientData.direccion || "");
     setNombreVendedor(clientData.nombreVendedor || "");
+    setDescObservacion(clientData.desc_observacion || "");
     setContacto(
       clientData.contacto.length > 0
         ? clientData.contacto.map((contacto) => ({
@@ -118,6 +120,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
         ciudad,
         direccion,
         nombreVendedor,
+        desc_observacion,
       };
       console.log("ModalForm: clientData", clientData);
       await onSubmit(clientData);
@@ -342,22 +345,25 @@ const ModalForm: React.FC<ModalFormProps> = ({
                   placeholder="Jacobo Hunter"
                 />
               </label>
-              <textarea className="textarea w-100" placeholder="Observación"></textarea>
+              <textarea
+                value={desc_observacion}
+                onChange={(e) => setDescObservacion(e.target.value)}
+                className="textarea w-100"
+              />
             </div>
 
             <div className="flex justify-between mt-4">
               <button className="btn btn-success">
                 {mode === "edit" ? "Guardar Cambios" : "Agregar Cliente"}
               </button>
-
             </div>
           </form>
           <button
-                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-5"
-                onClick={onClose}
-              >
-                ✕
-              </button>
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-5"
+            onClick={onClose}
+          >
+            ✕
+          </button>
         </div>
       </dialog>
     </>

@@ -14,6 +14,7 @@ export interface NavBarProps {
 export interface TableListProps {
   handleOpen: (mode: "add" | "edit", id_cliente: string) => void;
   searchTerm: string;
+  reload: boolean
 }
 
 export interface CardProps {
@@ -23,7 +24,6 @@ export interface CardProps {
 //Client
 export interface Client {
   id_cliente: string
-  id_tipo_familia: string;
   tipo_doc: string;
   nro_doc: string;
   razon_comercial: string;
@@ -45,6 +45,7 @@ export interface clientData {
   direccion: string;
   nombreVendedor: string;
   contacto: Contacto[];
+  desc_observacion: string;
 }
 
 export interface Contacto {

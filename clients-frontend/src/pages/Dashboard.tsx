@@ -14,28 +14,31 @@ const Dashboard = () => {
   const [clientData, setClientData] = useState<clientData>();
   const [clientId, setClientId] = useState<string | null>(null);
   const [reload, setReload] = useState<boolean>(false); //Controlar
-
   const handleOpen = async (mode: "add" | "edit", clientId?: string): Promise<void> => {
     setModalMode(mode);
-    if (clientId) {
-      //console.log("Id ClientId HandleOpen: ", clientId);
+    if (mode === "add") {
+      // Reinicar setClientData a vacio(Form Vacio y no con datos)
+      setClientData({
+        razonComercial: "",
+        nombreComercial: "",
+        rubro: "",
+        tipoDoc: "",
+        nroDoc: "",
+        ciudad: "",
+        direccion: "",
+        nombreVendedor: "",
+        desc_observacion: "",
+        contacto: [],
+      });
+    } else if (mode === "edit" && clientId) {
       setClientId(clientId);
-      //Otro endpoint que me muestra datos del cliente completo con IDS
       try {
         const response = await axios.get<clientData>(`http://localhost:3000/api/clientes-data/${clientId}`, {
-          
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        //console.log('Respuesta del response.data: ',response.data);// ME DA TODO LA INFOMARCION
-        //console.log('Respuesta del response.data (Rubro): ',response.data.rubro); //Me imprime undefined
         const client = response.data;
-        //Me da todo los ids necesitados... ahora saber como usarlos en el endpoint de Editar
-        //console.log('Client recibido (Dashboard): ',client);
-        //console.log('Antes del setClientData:(Dashboard)',client.razonComercial);
-        
-      
         setClientData({
           razonComercial: client.razonComercial,
           nombreComercial: client.nombreComercial,
@@ -45,6 +48,7 @@ const Dashboard = () => {
           ciudad: client.ciudad,
           direccion: client.direccion,
           nombreVendedor: client.nombreVendedor,
+          desc_observacion: client.desc_observacion,
           contacto: client.contacto.map((contacto) => ({
             id_contacto: contacto.id_contacto,
             nombre_contacto: contacto.nombre_contacto,
@@ -58,21 +62,18 @@ const Dashboard = () => {
               id_correo: correo.id_correo,
               correo: correo.correo,
               correo2: correo.correo2,
-              
             })),
-            
           })),
         });
-        //console.log('Despues del setClientData:(Dashboard)',client.razonComercial); //Me imprime undefined
-        //console.log('Despues del setClientData:(Dashboard)RUBRO: ',client.rubro); //Me imprime el valor
       } catch (error) {
         console.error("Error al obtener los datos del cliente:", error);
       }
     }
     setIsOpen(true);
-  };  
+  };
+  
   useEffect(() => {
-    //console.log('Nuevo estado de clientData despues del (setClientData):', clientData);
+    console.log('Nuevo estado de clientData despues del (setClientData):', clientData);
   }, [clientData]); // Solo se ejecuta cuando clientData cambia
 
 
@@ -124,6 +125,7 @@ const Dashboard = () => {
     }
     setReload(!reload);
   };
+  
   return (
     <>
       <NavBar onOpen={() => handleOpen("add")} onSearch={setSearchTerm} />
