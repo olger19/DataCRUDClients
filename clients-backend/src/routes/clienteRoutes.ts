@@ -20,7 +20,7 @@ const authenticate = (req: any, res: any, next: any) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
     req.user = decoded; // Guardamos el usuario en la request
-    console.log("Datos decodificados del token:", decoded);
+    //console.log("Datos decodificados del token:", decoded);
     next();
   } catch (error) {
     res.status(401).json({ message: "Token inválido o expirado" });
@@ -209,16 +209,16 @@ router.post("/clientes/:id", authenticate, async (req: any, res: any) => {
 
   try {
     const {
-      razonComercial,
-      nombreComercial,
-      tipoDoc,
-      nroDoc,
-      ciudad,
-      direccion,
-      nombreVendedor,
-      rubro,
-      contacto,
-      desc_observacion,
+      razonComercial = null,
+      nombreComercial = null,
+      tipoDoc = null,
+      nroDoc = null,
+      ciudad = null,
+      direccion = null,
+      nombreVendedor = null,
+      rubro = null,
+      contacto = [],
+      desc_observacion = null,
     } = req.body;
     console.log("Datos del cliente:", req.body);
 
@@ -230,54 +230,6 @@ router.post("/clientes/:id", authenticate, async (req: any, res: any) => {
       return res
         .status(400)
         .json({ message: "El campo 'razonComercial' es obligatorio" });
-    }
-
-    if (!nombreComercial) {
-      return res
-        .status(400)
-        .json({ message: "El campo 'nombreComercial' es obligatorio" });
-    }
-
-    if (!tipoDoc) {
-      return res
-        .status(400)
-        .json({ message: "El campo 'tipoDoc' es obligatorio" });
-    }
-
-    if (!nroDoc) {
-      return res
-        .status(400)
-        .json({ message: "El campo 'nroDoc' es obligatorio" });
-    }
-
-    if (!ciudad) {
-      return res
-        .status(400)
-        .json({ message: "El campo 'ciudad' es obligatorio" });
-    }
-
-    if (!direccion) {
-      return res
-        .status(400)
-        .json({ message: "El campo 'direccion' es obligatorio" });
-    }
-
-    if (!nombreVendedor) {
-      return res
-        .status(400)
-        .json({ message: "El campo 'nombreVendedor' es obligatorio" });
-    }
-
-    if (!rubro) {
-      return res
-        .status(400)
-        .json({ message: "El campo 'rubro' es obligatorio" });
-    }
-
-    if (!contacto) {
-      return res
-        .status(400)
-        .json({ message: "El campo 'contacto' es obligatorio" });
     }
 
     await client.query("BEGIN");
@@ -352,36 +304,18 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
     //console.log("id cliente es: ", id);
     //console.log("Parametros del req.params: ", req.params); //Solo es el id
     const {
-      razonComercial,
-      nombreComercial,
-      tipoDoc,
-      nroDoc,
-      ciudad,
-      direccion,
-      nombreVendedor,
-      rubro,
-      contacto,
-      desc_observacion,
+      razonComercial = null,
+      nombreComercial = null,
+      tipoDoc = null,
+      nroDoc = null,
+      ciudad = null,
+      direccion = null,
+      nombreVendedor = null,
+      rubro = null,
+      contacto = [],
+      desc_observacion= null,
     } = req.body;
     //console.log("Datos del cliente a actualizar:", req.body);
-
-    // Verificación de campos obligatorios
-    if (
-      !razonComercial ||
-      !nombreComercial ||
-      !tipoDoc ||
-      !nroDoc ||
-      !ciudad ||
-      !direccion ||
-      !nombreVendedor ||
-      !rubro ||
-      !contacto||
-      !desc_observacion
-    ) {
-      return res.status(400).json({
-        message: "Todos los campos son obligatorios. ",
-      });
-    }
 
     await client.query("BEGIN");
 
@@ -414,7 +348,7 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
           telefonos,
           correos,
         } = contactos;
-        console.log("El contacto es: ", id_contacto);
+        //console.log("El contacto es: ", id_contacto);
 
         // Verificar si el id_contacto está definido
         if (!id_contacto) {
@@ -478,6 +412,29 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
     client.release();
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Endpoints que todavia no se usan
 // Endpoint para eliminar un cliente

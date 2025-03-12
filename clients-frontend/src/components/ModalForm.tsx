@@ -29,8 +29,8 @@ const ModalForm: React.FC<ModalFormProps> = ({
   ]);
 
   useEffect(() => {
-    if (!isOpen || !clientData) return; // No ejecuta si el modal está cerrado
-
+    if (!isOpen || !clientData) return;
+  
     setRazonComercial(clientData.razonComercial || "");
     setNomComercial(clientData.nombreComercial || "");
     setRubro(clientData.rubro || "");
@@ -40,22 +40,28 @@ const ModalForm: React.FC<ModalFormProps> = ({
     setDireccion(clientData.direccion || "");
     setNombreVendedor(clientData.nombreVendedor || "");
     setDescObservacion(clientData.desc_observacion || "");
+  
     setContacto(
-      clientData.contacto.length > 0
+      clientData.contacto && clientData.contacto.length > 0
         ? clientData.contacto.map((contacto) => ({
             id_contacto: contacto.id_contacto || "",
             nombre_contacto: contacto.nombre_contacto || "",
             cargo_contacto: contacto.cargo_contacto || "",
-            telefonos: contacto.telefonos.map((telefono) => ({
-              id_telefono: telefono.id_telefono || "",
-              numero: telefono.numero || "",
-              numero2: telefono.numero2 || "",
-            })),
-            correos: contacto.correos.map((correo) => ({
-              id_correo: correo.id_correo || "",
-              correo: correo.correo || "",
-              correo2: correo.correo2 || "",
-            })),
+            telefonos: contacto.telefonos?.length
+              ? contacto.telefonos.map((telefono) => ({
+                  id_telefono: telefono.id_telefono || "",
+                  numero: telefono.numero || "",
+                  numero2: telefono.numero2 || "",
+                }))
+              : [{ id_telefono: "", numero: "", numero2: "" }], // Valor por defecto
+  
+            correos: contacto.correos?.length
+              ? contacto.correos.map((correo) => ({
+                  id_correo: correo.id_correo || "",
+                  correo: correo.correo || "",
+                  correo2: correo.correo2 || "",
+                }))
+              : [{ id_correo: "", correo: "", correo2: "" }], // Valor por defecto
           }))
         : [
             {
@@ -196,17 +202,19 @@ const ModalForm: React.FC<ModalFormProps> = ({
                   />
                 </label>
               </div>
-
-              <label className="input input-bordered flex items-center w-full gap-2">
-                Nom. Vend.:
-                <input
-                  type="text"
-                  value={nombreVendedor}
-                  onChange={(e) => setNombreVendedor(e.target.value)}
-                  className="grow"
-                  placeholder="Juan"
-                />
-              </label>
+              <div className="grid grid-cols-1 gap-4">
+                <label className="input input-bordered w-full flex items-center gap-2">
+                  Nom. Vend.:
+                  <input
+                    type="text"
+                    value={nombreVendedor}
+                    onChange={(e) => setNombreVendedor(e.target.value)}
+                    className="grow"
+                    placeholder="Juan"
+                  />
+                </label>
+                
+              </div>
             </div>
 
             {contacto.map((contact, contactIndex) => (

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
@@ -72,9 +72,9 @@ const Dashboard = () => {
     setIsOpen(true);
   };
   
-  useEffect(() => {
-    console.log('Nuevo estado de clientData despues del (setClientData):', clientData);
-  }, [clientData]); // Solo se ejecuta cuando clientData cambia
+  //useEffect(() => {
+  //  console.log('Nuevo estado de clientData despues del (setClientData):', clientData);
+  //}, [clientData]); // Solo se ejecuta cuando clientData cambia
 
 
   const { id } = useParams<{ id: string }>();
@@ -84,7 +84,7 @@ const Dashboard = () => {
       console.error("Token de autenticación no encontrado");
       return;
     }
-    console.log('Datos enviados a backend(NewClient): ',newClientData)
+    //console.log('Datos enviados a backend(NewClient): ',newClientData)
     if (modalMode == "add") {
       try {
         // Token de autorizacion
