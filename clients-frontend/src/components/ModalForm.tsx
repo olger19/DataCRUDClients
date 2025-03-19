@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { ModalFormProps, Contacto } from "../types";
+import { useParams } from "react-router-dom";
 
 const ModalForm: React.FC<ModalFormProps> = ({
   isOpen,
@@ -9,6 +10,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
   onSubmit,
   clientData,
 }) => {
+  const { id } = useParams<{ id: string }>();
   const [razonComercial, setRazonComercial] = useState("");
   const [nombreComercial, setNomComercial] = useState("");
   const [rubro, setRubro] = useState("");
@@ -28,9 +30,10 @@ const ModalForm: React.FC<ModalFormProps> = ({
     },
   ]);
 
+  //console.log("Este es el id: ",id); // Me da el respectivo id familia.
   useEffect(() => {
     if (!isOpen || !clientData) return;
-  
+
     setRazonComercial(clientData.razonComercial || "");
     setNomComercial(clientData.nombreComercial || "");
     setRubro(clientData.rubro || "");
@@ -40,7 +43,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
     setDireccion(clientData.direccion || "");
     setNombreVendedor(clientData.nombreVendedor || "");
     setDescObservacion(clientData.desc_observacion || "");
-  
+
     setContacto(
       clientData.contacto && clientData.contacto.length > 0
         ? clientData.contacto.map((contacto) => ({
@@ -54,7 +57,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
                   numero2: telefono.numero2 || "",
                 }))
               : [{ id_telefono: "", numero: "", numero2: "" }], // Valor por defecto
-  
+
             correos: contacto.correos?.length
               ? contacto.correos.map((correo) => ({
                   id_correo: correo.id_correo || "",
@@ -202,19 +205,20 @@ const ModalForm: React.FC<ModalFormProps> = ({
                   />
                 </label>
               </div>
-              <div className="grid grid-cols-1 gap-4">
-                <label className="input input-bordered w-full flex items-center gap-2">
-                  Nom. Vend.:
-                  <input
-                    type="text"
-                    value={nombreVendedor}
-                    onChange={(e) => setNombreVendedor(e.target.value)}
-                    className="grow"
-                    placeholder="Juan"
-                  />
-                </label>
-                
-              </div>
+              {id === "1" ? (
+                <div className="grid grid-cols-1 gap-4">
+                  <label className="input input-bordered w-full flex items-center gap-2">
+                    Nom. Vend.:
+                    <input
+                      type="text"
+                      value={nombreVendedor}
+                      onChange={(e) => setNombreVendedor(e.target.value)}
+                      className="grow"
+                      placeholder="Juan"
+                    />
+                  </label>
+                </div>
+              ) : null}
             </div>
 
             {contacto.map((contact, contactIndex) => (
@@ -331,7 +335,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
                 ))}
               </div>
             ))}
-
+            <h4 className="" />
             <div className="grid grid-cols-2 gap-4">
               <label className="input input-bordered flex items-center w-full gap-2 col-span-2">
                 Ciudad:
