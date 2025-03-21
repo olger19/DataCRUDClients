@@ -33,25 +33,30 @@ router.get("/export-excel/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const result = await client.query(`SELECT
-        c.id_cliente,
-		tf.nombre_tipo,
-		c.tipo_doc,
-		c.nro_doc,
-      c.razon_comercial, 
-      c.nombre_comercial, 
-      con.nombre_contacto,
-      STRING_AGG(DISTINCT t.numero, ', ') AS telefonos,
-      STRING_AGG(DISTINCT co.correo, ', ') AS correos,
-      STRING_AGG(DISTINCT t.numero2, ', ') AS telefonos2,
-      STRING_AGG(DISTINCT co.correo2, ', ') AS correos2
-      FROM clientes c
-      LEFT JOIN usuario_tipo_familia ut ON c.id_tipo_familia = ut.id_tipo_familia
-	  LEFT JOIN tipos_familia tf ON ut.id_tipo_familia = tf.id_tipo_familia
-      LEFT JOIN contactos con ON c.id_cliente = con.id_cliente
-      LEFT JOIN telefonos t ON con.id_contacto = t.id_contacto
-      LEFT JOIN correos co ON con.id_contacto = co.id_contacto
-      where ut.id_tipo_familia = $1
-      GROUP BY c.id_cliente,c.razon_comercial, c.nombre_comercial, con.nombre_contacto, c.id_tipo_familia, ut.id_tipo_familia, c.tipo_doc, nro_doc, tf.nombre_tipo;`, [id]); // Ajusta la consulta a tu base de datos
+	        c.id_cliente,
+			tf.nombre_tipo,
+			c.tipo_doc,
+			c.nro_doc,
+	      c.razon_comercial, 
+	      c.nombre_comercial, 
+		  c.ciudad,
+		  c.direccion,
+      c.contacto2,
+		  c.rubro,
+		  c.desc_observacion,
+	      con.nombre_contacto,
+	      STRING_AGG(DISTINCT t.numero, ', ') AS telefonos,
+	      STRING_AGG(DISTINCT co.correo, ', ') AS correos,
+	      STRING_AGG(DISTINCT t.numero2, ', ') AS telefonos2,
+	      STRING_AGG(DISTINCT co.correo2, ', ') AS correos2
+	      FROM clientes c
+	      LEFT JOIN usuario_tipo_familia ut ON c.id_tipo_familia = ut.id_tipo_familia
+		  LEFT JOIN tipos_familia tf ON ut.id_tipo_familia = tf.id_tipo_familia
+	      LEFT JOIN contactos con ON c.id_cliente = con.id_cliente
+	      LEFT JOIN telefonos t ON con.id_contacto = t.id_contacto
+	      LEFT JOIN correos co ON con.id_contacto = co.id_contacto
+	      where ut.id_tipo_familia = $1
+	      GROUP BY c.id_cliente,c.razon_comercial, c.nombre_comercial, con.nombre_contacto, c.id_tipo_familia, ut.id_tipo_familia, c.tipo_doc, nro_doc, tf.nombre_tipo;`, [id]); // Ajusta la consulta a tu base de datos
     client.release();
 
     const workbook = new ExcelJS.Workbook();
@@ -62,7 +67,7 @@ router.get("/export-excel/:id", authenticate, async (req, res) => {
       header: key,
       key: key,
     }));
-
+    
     // Agregar datos
     worksheet.addRows(result.rows);
 
@@ -85,7 +90,7 @@ router.get("/clientes-data/:id", authenticate, async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const result = await client.query(
-      `SELECT c.id_cliente, c.razon_comercial, c.nombre_comercial, c.tipo_doc, c.nro_doc, c.ciudad, c.direccion, c.nombre_vendedor, c.rubro,
+      `SELECT c.id_cliente, c.razon_comercial, c.nombre_comercial, c.tipo_doc, c.nro_doc, c.ciudad, c.direccion, c.nombre_vendedor, c.contacto2, c.rubro,
               con.id_contacto, con.nombre_contacto, con.cargo_contacto,
               t.id_telefono, t.numero AS telefono_numero, t.numero2 AS telefono_numero2,
               co.id_correo, co.correo AS correo_principal, co.correo2 AS correo_secundario,
@@ -110,6 +115,7 @@ router.get("/clientes-data/:id", authenticate, async (req: any, res: any) => {
           ciudad: row.ciudad,
           direccion: row.direccion,
           nombreVendedor: row.nombre_vendedor,
+          contacto2: row.contacto2,
           rubro: row.rubro,
           desc_observacion: row.desc_observacion,
           contacto: [],
@@ -177,7 +183,9 @@ router.get(
 		c.tipo_doc,
 		c.nro_doc,
       c.razon_comercial, 
-      c.nombre_comercial, 
+      c.nombre_comercial,
+      c.ciudad, 
+      c.nombre_vendedor,
       con.nombre_contacto,
       STRING_AGG(DISTINCT t.numero, ', ') AS telefonos,
       STRING_AGG(DISTINCT co.correo, ', ') AS correos,
@@ -190,7 +198,7 @@ router.get(
       LEFT JOIN telefonos t ON con.id_contacto = t.id_contacto
       LEFT JOIN correos co ON con.id_contacto = co.id_contacto
       where ut.id_tipo_familia = $1
-      GROUP BY c.id_cliente,c.razon_comercial, c.nombre_comercial, con.nombre_contacto, c.id_tipo_familia, ut.id_tipo_familia, c.tipo_doc, nro_doc, tf.nombre_tipo;`,
+      GROUP BY c.id_cliente,c.razon_comercial, c.nombre_comercial, con.nombre_contacto, c.nombre_vendedor,c.id_tipo_familia, ut.id_tipo_familia, c.ciudad, c.tipo_doc, nro_doc, tf.nombre_tipo;`,
         [id]
       );
 
@@ -216,14 +224,15 @@ router.post("/clientes/:id", authenticate, async (req: any, res: any) => {
       ciudad = null,
       direccion = null,
       nombreVendedor = null,
+      contacto2 = null,
       rubro = null,
       contacto = [],
       desc_observacion = null,
     } = req.body;
-    console.log("Datos del cliente:", req.body);
+    //console.log("Datos del cliente:", req.body);
 
     if (!id) {
-      console.log("id:", id);
+      //console.log("id:", id);
       return res.status(400).json({ message: "El campo 'id' obligatorio" });
     }
     if (!razonComercial) {
@@ -235,8 +244,8 @@ router.post("/clientes/:id", authenticate, async (req: any, res: any) => {
     await client.query("BEGIN");
 
     const result = await client.query(
-      `INSERT INTO clientes (id_tipo_familia, razon_comercial, nombre_comercial, tipo_doc, nro_doc, ciudad, direccion, nombre_vendedor, rubro, desc_observacion)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      `INSERT INTO clientes (id_tipo_familia, razon_comercial, nombre_comercial, tipo_doc, nro_doc, ciudad, direccion, nombre_vendedor, contacto2, rubro, desc_observacion)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING id_cliente`,
       [
         id,
@@ -247,6 +256,7 @@ router.post("/clientes/:id", authenticate, async (req: any, res: any) => {
         ciudad,
         direccion,
         nombreVendedor,
+        contacto2,
         rubro,
         desc_observacion,
       ]
@@ -311,6 +321,7 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
       ciudad = null,
       direccion = null,
       nombreVendedor = null,
+      contacto2 = null,
       rubro = null,
       contacto = [],
       desc_observacion= null,
@@ -322,8 +333,8 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
     // Actualizar cliente
     await client.query(
       `UPDATE clientes
-      SET razon_comercial = $1, nombre_comercial = $2, tipo_doc = $3, nro_doc = $4, ciudad = $5, direccion = $6, nombre_vendedor = $7, rubro = $8, desc_observacion = $9
-      WHERE id_cliente = $10`,
+      SET razon_comercial = $1, nombre_comercial = $2, tipo_doc = $3, nro_doc = $4, ciudad = $5, direccion = $6, nombre_vendedor = $7, contacto2 = $8, rubro = $9, desc_observacion = $10
+      WHERE id_cliente = $11`,
       [
         razonComercial,
         nombreComercial,
@@ -332,6 +343,7 @@ router.put("/clientes/:id", authenticate, async (req: any, res: any) => {
         ciudad,
         direccion,
         nombreVendedor,
+        contacto2,
         rubro,
         desc_observacion,
         id, //id Cliente

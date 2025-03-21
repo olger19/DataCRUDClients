@@ -28,6 +28,8 @@ export interface Client {
   nro_doc: string;
   razon_comercial: string;
   nombre_comercial: string;
+  ciudad: string;
+  nombre_vendedor: string;
   nombre_contacto: string;
   telefonos: string;
   correos: string;
@@ -44,6 +46,7 @@ export interface clientData {
   ciudad: string;
   direccion: string;
   nombreVendedor: string;
+  contacto2: string;
   contacto: Contacto[];
   desc_observacion: string;
 }
