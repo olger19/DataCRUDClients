@@ -26,7 +26,7 @@ router.post("/login", async (req, res) => {
      GROUP BY u.id_usuario, u.email, u.password`,
       [email]
     );
-    console.log("Resultado de la consulta:", userResult.rows);
+    //console.log("Resultado de la consulta:", userResult.rows);
     if (userResult.rows.length === 0) {
       return res.status(401).json({ message: "Usuario no encontrado" });
     }
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
     );
 
     res.json({ message: "Inicio de sesión exitoso", token, permissions: user.tipo_familia.split(", ") });
-    console.log("Token:", token);
+    //console.log("Token:", token);
   } catch (error) {
     console.error("Error en el login:", error);
     res.status(500).json({ message: "Error en el servidor" });
