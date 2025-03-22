@@ -221,7 +221,7 @@ const ClientDetails: React.FC<TableListProps> = ({
         {clients.length === 0 ? (
           <p>Cargando datos...</p>
         ) : (
-          <table ref={tableRef} className="table table-xs table-zebra overflow-x-auto">
+          <table ref={tableRef} className="table table-xs table-zebra">
             <thead className="bg-base-200">
               <tr>
                 <th>Id</th>

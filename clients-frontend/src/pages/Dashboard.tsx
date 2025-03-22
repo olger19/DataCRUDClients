@@ -27,6 +27,7 @@ const Dashboard = () => {
         ciudad: "",
         direccion: "",
         nombreVendedor: "",
+        contacto2: "",
         desc_observacion: "",
         contacto: [],
       });
@@ -48,6 +49,7 @@ const Dashboard = () => {
           ciudad: client.ciudad,
           direccion: client.direccion,
           nombreVendedor: client.nombreVendedor,
+          contacto2: client.contacto2,
           desc_observacion: client.desc_observacion,
           contacto: client.contacto.map((contacto) => ({
             id_contacto: contacto.id_contacto,
@@ -128,7 +130,7 @@ const Dashboard = () => {
   
   return (
     <>
-      <NavBar onOpen={() => handleOpen("add")} onSearch={setSearchTerm} />
+      <NavBar onOpen={() => handleOpen("add")} onSearch={setSearchTerm}/>
       <ClientDetails handleOpen={handleOpen} searchTerm={searchTerm} reload={reload}/>
       <ModalForm
         isOpen={isOpen}

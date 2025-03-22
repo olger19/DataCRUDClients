@@ -19,6 +19,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
   const [ciudad, setCiudad] = useState("");
   const [direccion, setDireccion] = useState("");
   const [nombreVendedor, setNombreVendedor] = useState("");
+  const [contacto2, setContacto2] = useState("");
   const [desc_observacion, setDescObservacion] = useState("");
   const [contacto, setContacto] = useState<Contacto[]>([
     {
@@ -41,6 +42,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
     setNroDoc(clientData.nroDoc || "");
     setCiudad(clientData.ciudad || "");
     setDireccion(clientData.direccion || "");
+    setContacto2(clientData.contacto2 || "");
     setNombreVendedor(clientData.nombreVendedor || "");
     setDescObservacion(clientData.desc_observacion || "");
 
@@ -129,9 +131,10 @@ const ModalForm: React.FC<ModalFormProps> = ({
         ciudad,
         direccion,
         nombreVendedor,
+        contacto2,
         desc_observacion,
       };
-      console.log("ModalForm: clientData", clientData);
+      //console.log("ModalForm: clientData", clientData);
       await onSubmit(clientData);
       onClose();
     } catch (error) {
@@ -219,6 +222,18 @@ const ModalForm: React.FC<ModalFormProps> = ({
                   </label>
                 </div>
               ) : null}
+              <div className="grid grid-cols-1 gap-4">
+                <label className="input input-bordered w-full flex items-center gap-2">
+                  Contacto 2:
+                  <input
+                    type="text"
+                    value={contacto2}
+                    onChange={(e) => setContacto2(e.target.value)}
+                    className="grow"
+                    placeholder="Juan"
+                  />
+                </label>
+              </div>
             </div>
 
             {contacto.map((contact, contactIndex) => (

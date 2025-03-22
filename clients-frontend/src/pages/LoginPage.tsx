@@ -25,7 +25,7 @@ const Login = () => {
           password,
         }
       );
-      console.log("Response", response);
+      //console.log("Response", response);
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem(
