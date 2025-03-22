@@ -4,6 +4,12 @@ clients-backend/node_modules/
 clients-backend/.env
 clients-backend/db.ts
 clients-backend/db.sql
+clients-backend/dataV2.sql
+clients-backend/dataV3Nancy.sql
+clients-backend/sisacad.sql
+clients-backend/querys.sql
+clients-frontend/hashed.js
 clients-frontend/node_modules/
 clients-backend/dist/
+clients-frontend/hashed.js
 
