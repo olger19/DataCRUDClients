@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 import ModalForm from "../components/ModalForm";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navbar";
 import ClientDetails from "../components/ClientDetails";
 import { clientData } from "../types";
 
